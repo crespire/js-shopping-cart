@@ -1,0 +1,12 @@
+{
+  "dog-kibble": {
+    "image": "kibble",
+    "name": "Dog Kibble",
+    "description": "A healthy kibble for your pup!"
+  },
+  "dog-treats": {
+    "image": "treat",
+    "name": "Dog Treats",
+    "description": "A package of delicious treats, yum!"
+  }
+}
