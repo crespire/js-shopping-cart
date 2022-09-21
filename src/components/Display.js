@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Display() {
+function Display(props) {
   return (
     <div className="">
       Display
