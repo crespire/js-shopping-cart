@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
 import uniqid from 'uniqid';
 import { inventory } from "../assets/Inventory";
 import Sidebar from './Sidebar';
 import Display from './Display';
+
+export const CheckoutContext = createContext(false);
 
 function Store() {
   const [cart, setCart] = useState([]);
@@ -59,8 +61,10 @@ function Store() {
 
   return (
     <div className="">
-      <Sidebar checkoutFlow={checkoutFlow} cart={cart} updateItem={updateItem} toggleCheckout={toggleCheckout} checkoutStep={checkoutStep} checkoutNext={checkoutNext} checkoutBack={checkoutBack} />
-      <Display items={items} addItem={addItem} />
+      <CheckoutContext.Provider value={checkoutFlow}>
+        <Sidebar checkoutFlow={checkoutFlow} cart={cart} updateItem={updateItem} toggleCheckout={toggleCheckout} checkoutStep={checkoutStep} checkoutNext={checkoutNext} checkoutBack={checkoutBack} />
+        <Display items={items} addItem={addItem} />
+      </CheckoutContext.Provider>
     </div>
   );
 }
