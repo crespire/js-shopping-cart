@@ -53,11 +53,13 @@ function Checkout(props) {
   }
 
   return (
-    <div className="flex flex-col p-4 space-y-4">
+    <div className="flex flex-col p-4 space-y-4 h-full justify-between">
       <div className="flex gap-2">
         { renderButtons(checkoutStep) }
       </div>
-      { renderStep(checkoutStep) }
+      <div className="flex flex-col gap-2 h-full grow">
+        { renderStep(checkoutStep) }
+      </div>      
     </div>
   );
 }
