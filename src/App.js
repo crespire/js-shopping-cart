@@ -1,11 +1,11 @@
 import React from 'react';
 import { Outlet } from "react-router-dom";
-import NavBar from './Nav';
+import Header from './Header';
 
 function App() {
   return (
     <div className="flex flex-col justify-center align-center h-full min-h-screen max-h-screen">
-      <NavBar />
+      <Header />
       <Outlet />
     </div>
   );
