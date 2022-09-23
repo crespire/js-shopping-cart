@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 function Home() {
   return (
-    <div className="flex flex-col flex-1 place-content-center">
+    <div className="flex grow flex-col flex-1 place-content-center">
       <div className="flex flex-col justify-center items-center gap-2">
         <p className="text-3xl">Welcome!</p>
         <p>You're about to step into the Cozy Creature Canteen!</p>

@@ -4,7 +4,7 @@ import NavBar from './Nav';
 
 function App() {
   return (
-    <div className="container mx-auto h-full flex flex-col justify-center align-center">
+    <div className="flex flex-col justify-center align-center h-full min-h-screen max-h-screen">
       <NavBar />
       <Outlet />
     </div>

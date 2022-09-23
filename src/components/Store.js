@@ -67,7 +67,7 @@ function Store() {
   }
 
   return (
-    <div className="flex flex-1 h-auto p-8 gap-2">
+    <div className="flex flex-1 grow p-2 gap-2 min-h-0">
       <CheckoutContext.Provider value={checkoutFlow}>
         <CurrencyContext.Provider value={formatter}>
           <Sidebar checkoutFlow={checkoutFlow} cart={cart} updateItem={updateItem} toggleCheckout={toggleCheckout} checkoutStep={checkoutStep} checkoutNext={checkoutNext} checkoutBack={checkoutBack} />
