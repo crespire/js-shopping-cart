@@ -1,7 +1,6 @@
 import React from 'react';
 import { StepOne, StepTwo, StepThree, StepFour } from './CheckoutSteps';
 
-
 function Checkout(props) {
   const {cart, toggleCheckout, checkoutInformation, setCheckoutInformation, checkoutStep, checkoutNext, checkoutBack} = props;
 
@@ -23,7 +22,6 @@ function Checkout(props) {
     const target = e.target
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const prop = target.name;
-    console.log(`Changing ${prop} to ${value}.`);
 
     setCheckoutInformation(oldInfo => {
       return {...oldInfo, [prop]: value};

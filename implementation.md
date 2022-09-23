@@ -59,3 +59,7 @@ Store
 Home will be one page.
 Store will be one page.
 Items will be a subroute of the store page
+
+
+# Next step
+I'd like to add a footer to the site.

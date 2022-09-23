@@ -5,14 +5,11 @@ function CartLine(props) {
   const {item, i, quantity, updateItem=null} = props;
   const inCheckout = useContext(CheckoutContext);
 
-  let style = "";
   const changeQuantity = (e) => {
     updateItem(item, Number(e.target.value));
   }
 
-  if (i % 2) { style += " bg-slate-100" };
-
-
+  let style = i % 2 ? "bg-slate-100" : '';
 
   return (
     <tr className={style}>

@@ -29,7 +29,6 @@ function Store() {
   const cartTotal = cart.reduce((total, entry) => { return total += entry.item.cost * entry.quantity }, 0);
 
   const addItem = (item, quantity) => {
-    console.log(`Adding ${quantity} of itemID ${item.id}`);
     const itemIDs = cart.map(entry => entry.item.id);
     if (itemIDs.includes(item.id)) {
       let entry = cart.find(obj => obj.item.id === item.id);
@@ -44,7 +43,6 @@ function Store() {
   };
 
   const removeItem = (id) => {
-    console.log(`Removing itemID ${id}`);
     setCart(oldCart => {
       return oldCart.filter(entry => entry.item.id !== id);
     });
@@ -54,7 +52,6 @@ function Store() {
     if (quantity === 0) {
       removeItem(item.id);
     } else {
-      console.log(`Updating to ${quantity} of itemID ${item.id}`);
       setCart(oldCart => {
         let newCart = oldCart.filter(entry => entry.item.id !== item.id);
         let result = [...newCart, {item, quantity}].sort((a, b) => a.item.id > b.item.id);
@@ -64,13 +61,13 @@ function Store() {
   }
 
   const toggleCheckout = () => {
-    console.log('Toggle checkout');
     setCheckoutFlow(currentValue => !currentValue);
   }
 
   const checkoutNext = () => {
     if (checkoutStep === 4) {
-      console.log('Order submitted! Data received:', checkoutInformation);
+      console.log('Order submitted!');
+      console.table(checkoutInformation);
       alert('Your order was submitted!')
     } else {
       setCheckoutStep(prev => prev + 1);
