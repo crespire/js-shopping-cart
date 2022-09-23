@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StepOne, StepTwo, StepThree, StepFour } from './CheckoutSteps';
 
 

@@ -117,10 +117,6 @@ function StepFour(props) {
   const currencyFormatter = useContext(CurrencyContext);
   const cartTotal = useContext(CartContext);
 
-  const renderInfo = (info) => {
-
-  }
-
   return (
     <div className="flex flex-col space-y-4">
       <h3 className="text-2xl">Checkout</h3>
