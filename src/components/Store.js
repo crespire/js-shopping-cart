@@ -5,12 +5,14 @@ import Sidebar from './Sidebar';
 import Display from './Display';
 
 export const CheckoutContext = createContext(false);
+export const CurrencyContext = createContext(false);
 
 function Store() {
   const [cart, setCart] = useState([]);
-  const [checkoutFlow, setCheckoutflow] = useState(false);
+  const [checkoutFlow, setCheckoutFlow] = useState(false);
   const [items, setItems] = useState(Object.values(inventory).map(obj => ({...obj, id: uniqid()})));
   const [checkoutStep, setCheckoutStep] = useState(1);
+  const formatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD'});
 
   const addItem = (item, quantity) => {
     console.log(`Adding ${quantity} of itemID ${item.id}`);
@@ -19,8 +21,12 @@ function Store() {
       let entry = cart.find(obj => obj.item.id === item.id);
       updateItem(item, (quantity + entry.quantity));
     } else {
-      setCart(oldCart => [...oldCart, {item, quantity}]);  
-    }    
+      setCart(oldCart => {
+        let newCart = [...oldCart, {item, quantity}];
+        let result = newCart.sort((a, b) => a.item.id > b.item.id);
+        return result;
+      });
+    }
   };
 
   const removeItem = (id) => {
@@ -37,14 +43,15 @@ function Store() {
       console.log(`Updating to ${quantity} of itemID ${item.id}`);
       setCart(oldCart => {
         let newCart = oldCart.filter(entry => entry.item.id !== item.id);
-        return [...newCart, {item, quantity}];
+        let result = [...newCart, {item, quantity}].sort((a, b) => a.item.id > b.item.id);
+        return result;
       })
     }
   }
 
   const toggleCheckout = () => {
     console.log('Toggle checkout');
-    setCheckoutflow(currentValue => !currentValue);
+    setCheckoutFlow(currentValue => !currentValue);
   }
 
   const checkoutNext = () => {
@@ -60,10 +67,12 @@ function Store() {
   }
 
   return (
-    <div className="">
+    <div className="flex flex-row flex-1 p-8 gap-2">
       <CheckoutContext.Provider value={checkoutFlow}>
-        <Sidebar checkoutFlow={checkoutFlow} cart={cart} updateItem={updateItem} toggleCheckout={toggleCheckout} checkoutStep={checkoutStep} checkoutNext={checkoutNext} checkoutBack={checkoutBack} />
-        <Display items={items} addItem={addItem} />
+        <CurrencyContext.Provider value={formatter}>
+          <Sidebar checkoutFlow={checkoutFlow} cart={cart} updateItem={updateItem} toggleCheckout={toggleCheckout} checkoutStep={checkoutStep} checkoutNext={checkoutNext} checkoutBack={checkoutBack} />
+          <Display items={items} addItem={addItem} />
+        </CurrencyContext.Provider>
       </CheckoutContext.Provider>
     </div>
   );

@@ -5,7 +5,7 @@ function Checkout(props) {
 
   return (
     <div className="">
-      <button onClick={toggleCheckout}>Keep Shopping</button>
+      <button className="border-1 border-solid border-slate-300" onClick={toggleCheckout}>Keep Shopping</button>
       Master Checkout Form
     </div>
   );

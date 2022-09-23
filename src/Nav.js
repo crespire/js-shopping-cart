@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 
 function NavBar() {
   return (
-    <nav className="flex place-content-center">
-      <Link to="/">Home</Link> | <Link to="/store">Store</Link>
+    <nav className="flex place-content-evenly border-b border-solid border-black p-4">
+      <span className="p-2 background-slate-300 border border-solid border-black"><Link to="/">Home</Link></span>
+      <span className="p-2 background-slate-300 border border-solid border-black"><Link to="/store">Store</Link></span>
     </nav>
   );
 }
