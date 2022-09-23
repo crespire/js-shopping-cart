@@ -24,7 +24,7 @@ function Cart(props) {
       </table>
       <div className="flex flex-col">
         <span className="pb-2 text-right">Total: {currencyFormatter.format(cartTotal)}</span>
-        <button className="disabled:border-slate-300 disabled:text-slate-300 p-2 background-slate-300 border-2 border-solid border-black" onClick={toggleCheckout} disabled={cart.length === 0 ? true : false }>Checkout!</button>
+        <button className="disabled:border-slate-300 disabled:text-slate-300 p-2 background-slate-300 border-2 border-solid border-black" onClick={toggleCheckout} disabled={cart.length === 0 ? true : false }>Place Order</button>
       </div>
     </div>
   );

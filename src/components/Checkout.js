@@ -4,8 +4,8 @@ function Checkout(props) {
   const {cart, toggleCheckout, checkoutStep, checkoutNext, checkoutBack} = props;
 
   return (
-    <div className="">
-      <button className="border-1 border-solid border-slate-300" onClick={toggleCheckout}>Keep Shopping</button>
+    <div className="flex flex-col">
+      <button className="p-2 background-slate-300 border-2 border-solid border-black" onClick={toggleCheckout}>Back</button>
       Master Checkout Form
     </div>
   );
