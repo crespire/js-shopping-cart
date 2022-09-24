@@ -1,9 +1,44 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import CartLine from './CartLine';
 import { CartContext, CurrencyContext } from './Store';
 
 function StepOne(props) {
-  const { checkoutInformation, checkoutNext, handleInput } = props;
+  const { checkoutInformation, handleInput, checkoutNext } = props;
+  const [stepValid, setStepValid] = useState(false);
+  const [errors, setErrors] = useState([null]);
+  const { name, email, addressStreet, addressCity, addressArea, addressCountry, addressPost } = checkoutInformation;
+
+  const validateStep = () => {
+    setErrors([]);
+    if (name.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Name is required.']) }
+    if (email.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Email is required.']) }
+    if (email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setErrors(oldErrors => [...oldErrors, 'Email format is invalid.']) }
+    if (addressStreet.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Street is required.']) }
+    if (addressCity.length <= 0) { setErrors(oldErrors => [...oldErrors, 'City is required.']) }
+    if (addressCountry.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Country is required.']) }
+    if (addressPost.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Postal is required.']) }
+    if (addressPost.length > 0 && !/^(?:\d{5})|(?:\w{1}\d{1}\w{1}\s?\d{1}\w{1}\d{1})$/.test(addressPost)) { setErrors(oldErrors => [...oldErrors, 'Postal code format not recognized.']) }
+
+    if (errors.length === 0) {
+      setStepValid(true);
+    }
+  }
+
+  const renderNext = (checkoutStep) => {
+    let result;
+    let buttonText = checkoutStep === 3 ? 'Submit Order' : 'Next';
+    let disabled = !stepValid;
+    
+    if (disabled) { buttonText = 'Fix form errors to continue.'; }
+  
+    result = <button disabled={disabled} className="disabled:opacity-50 disabled:border-slate-500 grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>{buttonText}</button>
+  
+    return result;
+  }
+
+  useEffect(() => {
+    validateStep();
+  }, [name, email, addressStreet, addressCity, addressArea, addressCountry, addressPost])
 
   return (
     <div className="flex flex-col space-y-4 h-full justify-between">
@@ -11,15 +46,21 @@ function StepOne(props) {
         <h3 className="text-2xl">Checkout</h3>
         <span>
           <ol className="list-decimal">
-            <li className="font-bold">Contact Details</li>
-            <li>Shipping Details</li>
+            <li className="font-bold">Customer Details</li>
             <li>Billing Details</li>
             <li>Confirm Order</li>
           </ol>
         </span>
       </div>
       
-      <div className="flex flex-col grow">
+      <div className="flex flex-col grow space-y-2">
+        { errors.length > 0 &&
+          <div className="flex flex-col grow-0 border border-rose-500">
+            <ul>
+              { errors.map((error, i) => { return <li key={i}>{error}</li> }) }
+            </ul>
+          </div>
+        }
         <span>
           <label htmlFor="name">Name: </label>
           <input name="name" type="text" placeholder="Person Doe" value={checkoutInformation['name']} onChange={handleInput} required />
@@ -29,17 +70,75 @@ function StepOne(props) {
           <label htmlFor="email">Email: </label>
           <input name="email" type="email" placeholder="email@example.com" value={checkoutInformation['email']} onChange={handleInput} required />
         </span>
+
+        <span>
+          <label htmlFor="addressStreet">Street: </label>
+          <input type="text" name="addressStreet" placeholder="2A-123 East Street" value={checkoutInformation['address']} onChange={handleInput} required />
+        </span>
+
+        <span>
+          <label htmlFor="addressCity">City: </label>
+          <input type="text" name="addressCity" placeholder="Cityville" value={checkoutInformation['address']} onChange={handleInput} required />
+        </span>
+
+        <span>
+          <label htmlFor="addressArea">State/Province: </label>
+          <input type="text" name="addressArea" placeholder="Ontario" value={checkoutInformation['address']} onChange={handleInput} required />
+        </span>
+
+        <span>
+          <label htmlFor="addressCountry">Country: </label>
+          <input type="text" name="addressCountry" placeholder="Canada" value={checkoutInformation['address']} onChange={handleInput} required />
+        </span>
+
+        <span>
+          <label htmlFor="addressPost">ZIP/Post Code: </label>
+          <input type="text" name="addressPost" placeholder="12345 or A1B2C3" value={checkoutInformation['address']} onChange={handleInput} required />
+        </span>
       </div>
 
       <div className="flex basis-0">
-        <button className="grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>Next</button>
-      </div>      
+        { renderNext(1) }
+      </div>   
     </div>
   );
 }
 
 function StepTwo(props) {
-  const { checkoutInformation, checkoutNext, handleInput } = props;
+  const { checkoutInformation, handleInput, checkoutNext } = props;
+  const [stepValid, setStepValid] = useState(false);
+  const [errors, setErrors] = useState([null]);
+  const { cardNumber, cardExp, cardSec } = checkoutInformation;
+
+  const validateStep = () => {
+    setErrors([]);
+    if (cardNumber.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Card is required.']) }
+    if (cardNumber.length > 0 && !/^[^[\d]{16}$/.test(cardNumber)) { setErrors(oldErrors => [...oldErrors, 'Card number is invalid.']) }
+    if (cardExp.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Expiry is required.']) }
+    if (cardExp.length > 0 && !/^[\d]{2}\/[\d]{2}$/.test(cardExp)) { setErrors(oldErrors => [...oldErrors, 'Expiry is not valid.']) }
+    if (cardSec.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Security code is required.']) }
+    if (cardSec.length > 0 && !/^[\d]{3}$/.test(cardSec)) { setErrors(oldErrors => [...oldErrors, 'Security code is not valid.']) }
+
+    if (errors.length === 0) {
+      setStepValid(true);
+    }
+  }
+
+  const renderNext = (checkoutStep) => {
+    let result;
+    let buttonText = checkoutStep === 3 ? 'Submit Order' : 'Next';
+    let disabled = !stepValid;
+    
+    if (disabled) { buttonText = 'Fix form errors to continue.'; }
+  
+    result = <button disabled={disabled} className="disabled:opacity-50 disabled:border-slate-500 grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>{buttonText}</button>
+  
+    return result;
+  }
+
+  useEffect(() => {
+    validateStep();
+  }, [cardNumber, cardExp, cardSec])
 
   return (
     <div className="flex flex-col space-y-4 h-full justify-between">
@@ -47,93 +146,50 @@ function StepTwo(props) {
         <h3 className="text-2xl">Checkout</h3>
         <span>
           <ol className="list-decimal">
-            <li>Contact Details</li>
-            <li className="font-bold">Shipping Details</li>
-            <li>Billing Details</li>
-            <li>Confirm Order</li>
-          </ol>
-        </span>
-      </div>
-
-      <div className="flex flex-col grow">
-        <span>
-          <label htmlFor="address-street">Street: </label>
-          <input type="text" name="address-street" placeholder="2A-123 East Street" value={checkoutInformation['address']} onChange={handleInput} required />
-        </span>
-
-        <span>
-          <label htmlFor="address-city">City: </label>
-          <input type="text" name="address-city" placeholder="Cityville" value={checkoutInformation['address']} onChange={handleInput} required />
-        </span>
-
-        <span>
-          <label htmlFor="address-area">State/Province: </label>
-          <input type="text" name="address-area" placeholder="Ontario" value={checkoutInformation['address']} onChange={handleInput} required />
-        </span>
-
-        <span>
-          <label htmlFor="address-country">Country: </label>
-          <input type="text" name="address-country" placeholder="Canada" value={checkoutInformation['address']} onChange={handleInput} required />
-        </span>
-
-        <span>
-          <label htmlFor="address-post">ZIP/Post Code: </label>
-          <input type="text" name="address-post" placeholder="12345" value={checkoutInformation['address']} onChange={handleInput} required />
-        </span>
-      </div>
-
-      <div className="flex basis-0">
-        <button className="grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>Next</button>
-      </div> 
-    </div>
-  );
-}
-
-function StepThree(props) {
-  const { checkoutInformation, checkoutNext, handleInput } = props;
-
-  return (
-    <div className="flex flex-col space-y-4 h-full justify-between">
-      <div className="basis-0">
-        <h3 className="text-2xl">Checkout</h3>
-        <span>
-          <ol className="list-decimal">
-            <li>Contact Details</li>
-            <li>Shipping Details</li>
+            <li>Customer Details</li>
             <li className="font-bold">Billing Details</li>
             <li>Confirm Order</li>
           </ol>
         </span>
       </div>
 
-      <div className="flex flex-col grow">
+      <div className="flex flex-col grow space-y-2">
         <span>
-          <label htmlFor="card-number">Card Number: </label>
-          <input name="card-number" type="text" placeholder="1234536710254612" value={checkoutInformation['card-number']} onChange={handleInput} required />
+          <label htmlFor="cardNumber">Card Number: </label>
+          <input name="cardNumber" type="text" placeholder="1234536710254612" value={checkoutInformation['card-number']} onChange={handleInput} required />
         </span>
 
         <span>
-          <label htmlFor="card-exp">Card Exp: </label>
-          <input name="card-exp" type="text" placeholder="12/23" pattern="^[\d]{1,2}\/[\d]{2}$" value={checkoutInformation['card-exp']} onChange={handleInput} required />
+          <label htmlFor="cardExp">Card Exp: </label>
+          <input name="cardExp" type="text" placeholder="12/23" pattern="^[\d]{1,2}\/[\d]{2}$" value={checkoutInformation['card-exp']} onChange={handleInput} required />
         </span>
 
         <span>
-          <label htmlFor="card-sec">Security Code: </label>
-          <input name="card-sec" type="text" placeholder="123" pattern="^\d{3}$" value={checkoutInformation['card-sec']} onChange={handleInput} required />
+          <label htmlFor="cardSec">Security Code: </label>
+          <input name="cardSec" type="text" placeholder="123" pattern="^\d{3}$" value={checkoutInformation['card-sec']} onChange={handleInput} required />
         </span>
       </div>
 
       <div className="flex basis-0">
-        <button className="grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>Next</button>
-      </div> 
+        { renderNext(2) }
+      </div>  
     </div>
   );
 }
 
-function StepFour(props) {
+function StepThree(props) {
   const { cart, checkoutInformation, checkoutNext } = props;
   const currencyFormatter = useContext(CurrencyContext);
   const cartTotal = useContext(CartContext);
+
+  const renderNext = (checkoutStep) => {
+    let result;
+    let buttonText = checkoutStep === 3 ? 'Submit Order' : 'Next';
+  
+    result = <button className="disabled:opacity-50 disabled:border-slate-500 grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>{buttonText}</button>
+  
+    return result;
+  }
 
   return (
     <div className="flex flex-col space-y-4 h-full justify-between">
@@ -141,15 +197,14 @@ function StepFour(props) {
         <h3 className="text-2xl">Checkout</h3>
         <span>
           <ol className="list-decimal">
-            <li>Contact Details</li>
-            <li>Shipping Details</li>
+            <li>Customer Details</li>
             <li>Billing Details</li>
             <li className="font-bold">Confirm Order</li>
           </ol>
         </span>
       </div>
 
-      <div className="flex flex-col grow">
+      <div className="flex flex-col grow space-y-2">
         <span className="text-xl"><strong>Your Checkout Information</strong></span>
         <div>
           <ul>
@@ -196,10 +251,10 @@ function StepFour(props) {
       </div>
 
       <div className="flex basis-0">
-        <button className="grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>Submit Order</button>
-      </div> 
+        { renderNext(3) }
+      </div>
     </div>
   );
 }
 
-export { StepOne, StepTwo, StepThree, StepFour };
+export { StepOne, StepTwo, StepThree };

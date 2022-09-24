@@ -16,14 +16,14 @@ function Store() {
   const [checkoutInformation, setCheckoutInformation] = useState({
     name: '',
     email: '',
-    "address-street": '',
-    "address-city": '',
-    "address-area": '',
-    "address-country": '',
-    "address-post": '',
-    "card-number": '',
-    "card-exp": '',
-    "card-sec": '',
+    addressStreet: '',
+    addressCity: '',
+    addressArea: '',
+    addressCountry: '',
+    addressPost: '',
+    cardNumber: '',
+    cardExp: '',
+    cardSec: '',
   });
   const formatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD'});
   const cartTotal = cart.reduce((total, entry) => { return total += entry.item.cost * entry.quantity }, 0);

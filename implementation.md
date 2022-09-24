@@ -63,3 +63,25 @@ Items will be a subroute of the store page
 
 # Next step
 I'd like to add a footer to the site.
+
+# Form validation
+I think an overall "Checkout" component validation strategy will be difficult to implement well. I had a thought about doing a `validateField` helper, and then a `nextAvailable` callback that took a step parameter.
+
+The problem is that we use state to fill in the value of a field as the user changes it, so we must save invalid information into state in order to facilitate input. ie, if a user types "Jim" as their name, the state value updates over the three keystrokes as `"J" -> "Ji" -> "Jim"` and if we don't save them as we go, then the user can only input one character at a time and no input would ever be valid.
+
+I wonder if we can do a validation method on the "Next" button? Just don't change the step and validate that the current step's inputs match patterns.
+
+so then, we could use a similar strategy, except we just call the `validateField` when the user clicks "Next" rather than as they type. I don't think it's as dynamic as I'd like, but it makes implementation a bit easier. Plus, I think this would let me roll my own client side validation without utilizing something like `react-hook-form` to validate stuff. React hook form does "realtime" validation, but it looks pretty complicated, and I want to roll my own solution.
+
+Something like: ```js
+const validateStep = (step) => {
+  let valid = [];
+  
+  
+  validateField()
+
+  allValid ? true : false
+}
+
+<button>
+```
