@@ -54,6 +54,7 @@ function StepOne(props) {
       </div>
       
       <div className="flex flex-col grow space-y-2">
+
         { errors.length > 0 &&
           <div className="flex flex-col grow-0 border border-rose-500">
             <ul>
@@ -61,6 +62,7 @@ function StepOne(props) {
             </ul>
           </div>
         }
+
         <span>
           <label htmlFor="name">Name: </label>
           <input name="name" type="text" placeholder="Person Doe" value={checkoutInformation['name']} onChange={handleInput} required />
@@ -154,6 +156,15 @@ function StepTwo(props) {
       </div>
 
       <div className="flex flex-col grow space-y-2">
+
+        { errors.length > 0 &&
+          <div className="flex flex-col grow-0 border border-rose-500">
+            <ul>
+              { errors.map((error, i) => { return <li key={i}>{error}</li> }) }
+            </ul>
+          </div>
+        }
+
         <span>
           <label htmlFor="cardNumber">Card Number: </label>
           <input name="cardNumber" type="text" placeholder="1234536710254612" value={checkoutInformation['card-number']} onChange={handleInput} required />
