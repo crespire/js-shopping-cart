@@ -4,7 +4,6 @@ import { CartContext, CurrencyContext } from './Store';
 
 function StepOne(props) {
   const { checkoutInformation, handleInput, checkoutNext } = props;
-  const [stepValid, setStepValid] = useState(false);
   const [errors, setErrors] = useState([null]);
   const { name, email, addressStreet, addressCity, addressArea, addressCountry, addressPost } = checkoutInformation;
 
@@ -18,22 +17,18 @@ function StepOne(props) {
     if (addressCountry.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Country is required.']) }
     if (addressPost.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Postal is required.']) }
     if (addressPost.length > 0 && !/^(?:\d{5})|(?:\w{1}\d{1}\w{1}\s?\d{1}\w{1}\d{1})$/.test(addressPost)) { setErrors(oldErrors => [...oldErrors, 'Postal code format not recognized.']) }
-
-    if (errors.length === 0) {
-      setStepValid(true);
-    }
   }
 
   const renderNext = (checkoutStep) => {
-    let result;
-    let buttonText = checkoutStep === 3 ? 'Submit Order' : 'Next';
-    let disabled = !stepValid;
-    
-    if (disabled) { buttonText = 'Fix form errors to continue.'; }
+    let buttonText;
+
+    if (errors.length > 0) {
+      buttonText = 'Fix form errors to continue.';
+    } else {
+      buttonText = checkoutStep === 3 ? 'Submit Order' : 'Next';
+    }
   
-    result = <button disabled={disabled} className="disabled:opacity-50 disabled:border-slate-500 grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>{buttonText}</button>
-  
-    return result;
+    return <button disabled={!(errors.length === 0)} className="disabled:opacity-50 disabled:border-slate-500 grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>{buttonText}</button>;
   }
 
   useEffect(() => {
@@ -108,7 +103,6 @@ function StepOne(props) {
 
 function StepTwo(props) {
   const { checkoutInformation, handleInput, checkoutNext } = props;
-  const [stepValid, setStepValid] = useState(false);
   const [errors, setErrors] = useState([null]);
   const { cardNumber, cardExp, cardSec } = checkoutInformation;
 
@@ -120,22 +114,18 @@ function StepTwo(props) {
     if (cardExp.length > 0 && !/^[\d]{2}\/[\d]{2}$/.test(cardExp)) { setErrors(oldErrors => [...oldErrors, 'Expiry is not valid.']) }
     if (cardSec.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Security code is required.']) }
     if (cardSec.length > 0 && !/^[\d]{3}$/.test(cardSec)) { setErrors(oldErrors => [...oldErrors, 'Security code is not valid.']) }
-
-    if (errors.length === 0) {
-      setStepValid(true);
-    }
   }
 
   const renderNext = (checkoutStep) => {
-    let result;
-    let buttonText = checkoutStep === 3 ? 'Submit Order' : 'Next';
-    let disabled = !stepValid;
-    
-    if (disabled) { buttonText = 'Fix form errors to continue.'; }
-  
-    result = <button disabled={disabled} className="disabled:opacity-50 disabled:border-slate-500 grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>{buttonText}</button>
-  
-    return result;
+    let buttonText;
+
+    if (errors.length > 0) {
+      buttonText = 'Fix form errors to continue.';
+    } else {
+      buttonText = checkoutStep === 3 ? 'Submit Order' : 'Next';
+    }
+
+    return <button disabled={!(errors.length === 0)} className="disabled:opacity-50 disabled:border-slate-500 grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>{buttonText}</button>;
   }
 
   useEffect(() => {
