@@ -65,7 +65,7 @@ function Store() {
   }
 
   const checkoutNext = () => {
-    if (checkoutStep === 4) {
+    if (checkoutStep === 3) {
       console.log('Order received! Beep boop.');
       console.error('DISCLAIMER: Your order and information will not be processed. Please visit a real pet store to buy stuff for your fur baby.');
       console.table(checkoutInformation);
