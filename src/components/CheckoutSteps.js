@@ -213,15 +213,15 @@ function StepThree(props) {
             <li>Email: {checkoutInformation['email']}</li>
             <li>
               <strong>Address</strong><br />
-              {checkoutInformation['address-street']}<br />
-              {checkoutInformation['address-city']}, {checkoutInformation['address-area']}<br />
-              {checkoutInformation['address-country']}  {checkoutInformation['address-post']}
+              {checkoutInformation['addressStreet']}<br />
+              {checkoutInformation['addressCity']}, {checkoutInformation['addressArea']}<br />
+              {checkoutInformation['addressCountry']}  {checkoutInformation['addressPost']}
             </li>
             <li>
               <strong>Card Information</strong><br />
-              Last four digits: {checkoutInformation['card-number'].slice(-4)}<br />
-              Expiry: {checkoutInformation['card-exp']}<br />
-              Security Code: {checkoutInformation['card-sec']}
+              Last four digits: {checkoutInformation['cardNumber'].slice(-4)}<br />
+              Expiry: {checkoutInformation['cardExp']}<br />
+              Security Code: {checkoutInformation['cardSec']}
             </li>
           </ul>
         </div>
