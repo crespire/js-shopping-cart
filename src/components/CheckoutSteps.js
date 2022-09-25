@@ -109,7 +109,7 @@ function StepTwo(props) {
   const validateStep = () => {
     setErrors([]);
     if (cardNumber.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Card is required.']) }
-    if (cardNumber.length > 0 && !/^[^[\d]{16}$/.test(cardNumber)) { setErrors(oldErrors => [...oldErrors, 'Card number is invalid.']) }
+    if (cardNumber.length > 0 && !/^[\d]{16}$/.test(cardNumber)) { setErrors(oldErrors => [...oldErrors, 'Card number is invalid.']) }
     if (cardExp.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Expiry is required.']) }
     if (cardExp.length > 0 && !/^[\d]{2}\/[\d]{2}$/.test(cardExp)) { setErrors(oldErrors => [...oldErrors, 'Expiry is not valid.']) }
     if (cardSec.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Security code is required.']) }
