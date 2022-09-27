@@ -22,9 +22,8 @@ function Checkout(props) {
 
   const renderNext = (checkoutStep) => {
     let buttonText = checkoutStep === 3 ? 'Submit Order' : 'Next';
-    let errorsPresent = errors.length > 0;
 
-    return <button type="submit" disabled={errorsPresent} className="disabled:opacity-50 disabled:border-slate-500 grow p-2 background-slate-300 border-2 border-solid border-black">{buttonText}</button>;
+    return <button type="submit" className="disabled:opacity-50 disabled:border-slate-500 grow p-2 background-slate-300 border-2 border-solid border-black">{buttonText}</button>;
   }
 
   useEffect(() => {
