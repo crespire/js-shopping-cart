@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StepOne, StepTwo, StepThree } from './CheckoutSteps';
+import useForm from '../hooks/useForm';
 
 function Checkout(props) {
-  const {cart, toggleCheckout, checkoutInformation, setCheckoutInformation, checkoutStep, checkoutNext, checkoutBack} = props;
+  const {cart, toggleCheckout, setCheckoutInformation, checkoutStep, checkoutNext, checkoutBack} = props;
+  const { values, errors, handleChange, handleSubmit } = useForm(checkoutNext);
 
   const renderTopButtons = (checkoutStep) => {
     let result;
@@ -18,28 +20,30 @@ function Checkout(props) {
     return result;    
   }
 
-  const handleInput = (e) => {
-    const target = e.target
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const prop = target.name;
+  const renderNext = (checkoutStep) => {
+    let buttonText = checkoutStep === 3 ? 'Submit Order' : 'Next';
+    let errorsPresent = errors.length > 0;
 
-    setCheckoutInformation(oldInfo => {
-      return {...oldInfo, [prop]: value};
-    })
+    return <button type="submit" disabled={errorsPresent} className="disabled:opacity-50 disabled:border-slate-500 grow p-2 background-slate-300 border-2 border-solid border-black">{buttonText}</button>;
   }
+
+  useEffect(() => {
+    console.log(errors);
+    setCheckoutInformation(values);
+  }, [values]);
 
   const renderStep = (checkoutStep) => {
     let result;
 
     switch(checkoutStep) {
       case 1:
-        result = <StepOne checkoutInformation={checkoutInformation} handleInput={handleInput} checkoutNext={checkoutNext} />
+        result = <StepOne values={values} errors={errors} hookHandleInput={handleChange} handleSubmit={handleSubmit} renderNext={renderNext} />
         break;
       case 2:
-        result = <StepTwo checkoutInformation={checkoutInformation} handleInput={handleInput} checkoutNext={checkoutNext} />;
+        result = <StepTwo values={values} errors={errors} hookHandleInput={handleChange} handleSubmit={handleSubmit} renderNext={renderNext} />;
         break;
       case 3:
-        result = <StepThree cart={cart} checkoutInformation={checkoutInformation} handleInput={handleInput} checkoutNext={checkoutNext} />;
+        result = <StepThree cart={cart} checkoutInformation={values} handleSubmit={handleSubmit} renderNext={renderNext} />;
         break;
       default:
         result = <div>Error</div>

@@ -3,37 +3,7 @@ import CartLine from './CartLine';
 import { CartContext, CurrencyContext } from './Store';
 
 function StepOne(props) {
-  const { checkoutInformation, handleInput, checkoutNext } = props;
-  const [errors, setErrors] = useState([null]);
-  const { name, email, addressStreet, addressCity, addressArea, addressCountry, addressPost } = checkoutInformation;
-
-  const validateStep = () => {
-    setErrors([]);
-    if (name.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Name is required.']) }
-    if (email.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Email is required.']) }
-    if (email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setErrors(oldErrors => [...oldErrors, 'Email format is invalid.']) }
-    if (addressStreet.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Street is required.']) }
-    if (addressCity.length <= 0) { setErrors(oldErrors => [...oldErrors, 'City is required.']) }
-    if (addressCountry.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Country is required.']) }
-    if (addressPost.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Postal is required.']) }
-    if (addressPost.length > 0 && !/^(?:\d{5})|(?:\w{1}\d{1}\w{1}\s?\d{1}\w{1}\d{1})$/.test(addressPost)) { setErrors(oldErrors => [...oldErrors, 'Postal code format not recognized.']) }
-  }
-
-  const renderNext = (checkoutStep) => {
-    let buttonText;
-
-    if (errors.length > 0) {
-      buttonText = 'Fix form errors to continue.';
-    } else {
-      buttonText = checkoutStep === 3 ? 'Submit Order' : 'Next';
-    }
-  
-    return <button disabled={!(errors.length === 0)} className="disabled:opacity-50 disabled:border-slate-500 grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>{buttonText}</button>;
-  }
-
-  useEffect(() => {
-    validateStep();
-  }, [name, email, addressStreet, addressCity, addressArea, addressCountry, addressPost])
+  const { values, errors, hookHandleInput, handleSubmit, renderNext } = props;
 
   return (
     <div className="flex flex-col space-y-4 h-full justify-between">
@@ -48,89 +18,63 @@ function StepOne(props) {
         </span>
       </div>
       
-      <form className="flex flex-col grow space-y-2">
+      <div className="flex flex-col grow">
+        <form className="flex flex-col grow" onSubmit={handleSubmit}>
+          <div className="flex flex-col grow space-y-2">
+            <span>
+              <label htmlFor="name">Name: </label>
+              <input name="name" type="text" placeholder="Person Doe" value={values['name'] || ''} onChange={hookHandleInput} required />
+              { errors.name && <p className="border border-rose-500 border-solid">{errors.name}</p>}
+            </span>
 
-        { errors.length > 0 &&
-          <div className="flex flex-col grow-0 border border-rose-500">
-            <ul>
-              { errors.map((error, i) => { return <li key={i}>{error}</li> }) }
-            </ul>
+            <span>
+              <label htmlFor="email">Email: </label>
+              <input name="email" type="email" placeholder="email@example.com" onChange={hookHandleInput} required />
+              { errors.email && <p className="border border-rose-500 border-solid">{errors.email}</p>}
+            </span>
+
+            <span>
+              <label htmlFor="addressStreet">Street: </label>
+              <input type="text" name="addressStreet" placeholder="2A-123 East Street" value={values['addressStreet'] || ''} onChange={hookHandleInput} required />
+              { errors.addressStreet && <p className="border border-rose-500 border-solid">{errors.addressStreet}</p>}
+            </span>
+
+            <span>
+              <label htmlFor="addressCity">City: </label>
+              <input type="text" name="addressCity" placeholder="Cityville" value={values['addressCity'] || ''} onChange={hookHandleInput} required />
+              { errors.addressCity && <p className="border border-rose-500 border-solid">{errors.addressCity}</p>}
+            </span>
+
+            <span>
+              <label htmlFor="addressArea">State/Province: </label>
+              <input type="text" name="addressArea" placeholder="Ontario" value={values['addressArea'] || ''} onChange={hookHandleInput} required />
+              { errors.addressArea && <p className="border border-rose-500 border-solid">{errors.addressArea}</p>}
+            </span>
+
+            <span>
+              <label htmlFor="addressCountry">Country: </label>
+              <input type="text" name="addressCountry" placeholder="Canada" value={values['addressCountry'] || ''} onChange={hookHandleInput} required />
+              { errors.addressCountry && <p className="border border-rose-500 border-solid">{errors.addressCountry}</p>}
+            </span>
+
+            <span>
+              <label htmlFor="addressPost">ZIP/Post Code: </label>
+              <input type="text" name="addressPost" placeholder="12345 or A1B2C3" value={values['addressPost'] || ''} onChange={hookHandleInput} required />
+              { errors.addressPost && <p className="border border-rose-500 border-solid">{errors.addressPost}</p>}
+            </span>
           </div>
-        }
 
-        <span>
-          <label htmlFor="name">Name: </label>
-          <input name="name" type="text" placeholder="Person Doe" value={checkoutInformation['name']} onChange={handleInput} required />
-        </span>
-
-        <span>
-          <label htmlFor="email">Email: </label>
-          <input name="email" type="email" placeholder="email@example.com" value={checkoutInformation['email']} onChange={handleInput} required />
-        </span>
-
-        <span>
-          <label htmlFor="addressStreet">Street: </label>
-          <input type="text" name="addressStreet" placeholder="2A-123 East Street" value={checkoutInformation['address']} onChange={handleInput} required />
-        </span>
-
-        <span>
-          <label htmlFor="addressCity">City: </label>
-          <input type="text" name="addressCity" placeholder="Cityville" value={checkoutInformation['address']} onChange={handleInput} required />
-        </span>
-
-        <span>
-          <label htmlFor="addressArea">State/Province: </label>
-          <input type="text" name="addressArea" placeholder="Ontario" value={checkoutInformation['address']} onChange={handleInput} required />
-        </span>
-
-        <span>
-          <label htmlFor="addressCountry">Country: </label>
-          <input type="text" name="addressCountry" placeholder="Canada" value={checkoutInformation['address']} onChange={handleInput} required />
-        </span>
-
-        <span>
-          <label htmlFor="addressPost">ZIP/Post Code: </label>
-          <input type="text" name="addressPost" placeholder="12345 or A1B2C3" value={checkoutInformation['address']} onChange={handleInput} required />
-        </span>
-      </form>
-
-      <div className="flex basis-0">
-        { renderNext(1) }
-      </div>   
+          <div className="flex basis-0">
+            { renderNext(1) }
+          </div>          
+        </form>
+      </div>      
     </div>
   );
 }
 
 function StepTwo(props) {
-  const { checkoutInformation, handleInput, checkoutNext } = props;
-  const [errors, setErrors] = useState([null]);
-  const { cardNumber, cardExp, cardSec } = checkoutInformation;
-
-  const validateStep = () => {
-    setErrors([]);
-    if (cardNumber.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Card is required.']) }
-    if (cardNumber.length > 0 && !/^[\d]{16}$/.test(cardNumber)) { setErrors(oldErrors => [...oldErrors, 'Card number is invalid.']) }
-    if (cardExp.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Expiry is required.']) }
-    if (cardExp.length > 0 && !/^[\d]{2}\/[\d]{2}$/.test(cardExp)) { setErrors(oldErrors => [...oldErrors, 'Expiry is not valid.']) }
-    if (cardSec.length <= 0) { setErrors(oldErrors => [...oldErrors, 'Security code is required.']) }
-    if (cardSec.length > 0 && !/^[\d]{3}$/.test(cardSec)) { setErrors(oldErrors => [...oldErrors, 'Security code is not valid.']) }
-  }
-
-  const renderNext = (checkoutStep) => {
-    let buttonText;
-
-    if (errors.length > 0) {
-      buttonText = 'Fix form errors to continue.';
-    } else {
-      buttonText = checkoutStep === 3 ? 'Submit Order' : 'Next';
-    }
-
-    return <button disabled={!(errors.length === 0)} className="disabled:opacity-50 disabled:border-slate-500 grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>{buttonText}</button>;
-  }
-
-  useEffect(() => {
-    validateStep();
-  }, [cardNumber, cardExp, cardSec])
+  const { values, errors, hookHandleInput, handleSubmit, renderNext } = props;
 
   return (
     <div className="flex flex-col space-y-4 h-full justify-between">
@@ -145,52 +89,41 @@ function StepTwo(props) {
         </span>
       </div>
 
-      <form className="flex flex-col grow space-y-2">
+      <div className="flex flex-col grow">
+        <form className="flex flex-col grow" onSubmit={handleSubmit}>
+          <div className="flex flex-col grow space-y-2">
+            <span>
+              <label htmlFor="cardNumber">Card Number: </label>
+              <input name="cardNumber" type="text" placeholder="1234536710254612" value={values['cardNumber'] || ''} onChange={hookHandleInput} required />
+              { errors.cardNumber && <p className="border border-rose-500 border-solid">{errors.cardNumber}</p>}
+            </span>
 
-        { errors.length > 0 &&
-          <div className="flex flex-col grow-0 border border-rose-500">
-            <ul>
-              { errors.map((error, i) => { return <li key={i}>{error}</li> }) }
-            </ul>
+            <span>
+              <label htmlFor="cardExp">Card Exp: </label>
+              <input name="cardExp" type="text" placeholder="12/23" pattern="^[\d]{1,2}\/[\d]{2}$" value={values['cardExp'] || ''} onChange={hookHandleInput} required />
+              { errors.cardExp && <p className="border border-rose-500 border-solid">{errors.cardExp}</p>}
+            </span>
+
+            <span>
+              <label htmlFor="cardSec">Security Code: </label>
+              <input name="cardSec" type="text" placeholder="123" pattern="^\d{3}$" value={values['cardSec'] || ''} onChange={hookHandleInput} required />
+              { errors.cardSec && <p className="border border-rose-500 border-solid">{errors.cardSec}</p>}
+            </span>
           </div>
-        }
 
-        <span>
-          <label htmlFor="cardNumber">Card Number: </label>
-          <input name="cardNumber" type="text" placeholder="1234536710254612" value={checkoutInformation['card-number']} onChange={handleInput} required />
-        </span>
-
-        <span>
-          <label htmlFor="cardExp">Card Exp: </label>
-          <input name="cardExp" type="text" placeholder="12/23" pattern="^[\d]{1,2}\/[\d]{2}$" value={checkoutInformation['card-exp']} onChange={handleInput} required />
-        </span>
-
-        <span>
-          <label htmlFor="cardSec">Security Code: </label>
-          <input name="cardSec" type="text" placeholder="123" pattern="^\d{3}$" value={checkoutInformation['card-sec']} onChange={handleInput} required />
-        </span>
-      </form>
-
-      <div className="flex basis-0">
-        { renderNext(2) }
-      </div>  
+          <div className="flex basis-0">
+            { renderNext(2) }
+          </div>
+        </form>      
+      </div>
     </div>
   );
 }
 
 function StepThree(props) {
-  const { cart, checkoutInformation, checkoutNext } = props;
+  const { cart, checkoutInformation, handleSubmit, renderNext } = props;
   const currencyFormatter = useContext(CurrencyContext);
   const cartTotal = useContext(CartContext);
-
-  const renderNext = (checkoutStep) => {
-    let result;
-    let buttonText = checkoutStep === 3 ? 'Submit Order' : 'Next';
-  
-    result = <button className="disabled:opacity-50 disabled:border-slate-500 grow p-2 background-slate-300 border-2 border-solid border-black" onClick={checkoutNext}>{buttonText}</button>
-  
-    return result;
-  }
 
   return (
     <div className="flex flex-col space-y-4 h-full justify-between">
@@ -251,9 +184,9 @@ function StepThree(props) {
         </div>
       </div>
 
-      <div className="flex basis-0">
+      <form className="flex basis-0" onSubmit={handleSubmit}>
         { renderNext(3) }
-      </div>
+      </form>
     </div>
   );
 }
