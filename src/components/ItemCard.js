@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { CheckoutContext, CurrencyContext } from "./Store";
+import { CheckoutContext, CurrencyFormatContext } from "./Store";
 
 function ItemCard(props) {
   const [quantity, setQuantity] = useState(1);
   const item = props.item;
   const inCheckout = useContext(CheckoutContext);
-  const currencyFormatter = useContext(CurrencyContext);
+  const currencyFormatter = useContext(CurrencyFormatContext);
 
   const updateQuantity = (e) => {
     setQuantity(Math.round(Number(e.target.value)));

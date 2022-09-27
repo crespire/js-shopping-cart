@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import CartLine from './CartLine';
-import { CurrencyContext, CartContext } from './Store';
+import { CurrencyFormatContext, CartTotalContext } from './Store';
 
 function Cart(props) {
   const {cart, updateItem, toggleCheckout} = props;
-  const currencyFormatter = useContext(CurrencyContext);
-  const cartTotal = useContext(CartContext);
+  const currencyFormatter = useContext(CurrencyFormatContext);
+  const cartTotal = useContext(CartTotalContext);
 
   return (
     <div className="h-full flex flex-col align-center justify-between">

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import CartLine from './CartLine';
-import { CartContext, CurrencyContext } from './Store';
+import { CartTotalContext, CurrencyFormatContext } from './Store';
 
 function StepOne(props) {
   const { values, errors, hookHandleInput, handleSubmit, renderNext } = props;
@@ -122,8 +122,8 @@ function StepTwo(props) {
 
 function StepThree(props) {
   const { cart, checkoutInformation, handleSubmit, renderNext } = props;
-  const currencyFormatter = useContext(CurrencyContext);
-  const cartTotal = useContext(CartContext);
+  const currencyFormatter = useContext(CurrencyFormatContext);
+  const cartTotal = useContext(CartTotalContext);
 
   return (
     <div className="flex flex-col space-y-4 h-full justify-between">

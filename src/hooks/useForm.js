@@ -33,7 +33,7 @@ const useForm = (callback, defaultValues = {}) => {
     let regex;
     switch(property) {      
       case 'email':
-        regex = /^[\w\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        regex = /^[\w.]+@([\w-]+\.)+[\w-]{2,4}$/;
         regex.test(value) ? errorRemover(property) : errorSetter(property, 'Please enter a valid email.');
         break;
     

@@ -5,13 +5,13 @@ import Sidebar from './Sidebar';
 import Display from './Display';
 
 export const CheckoutContext = createContext(false);
-export const CurrencyContext = createContext(false);
-export const CartContext = createContext(0);
+export const CurrencyFormatContext = createContext(false);
+export const CartTotalContext = createContext(0);
 
 function Store() {
+  const items = Object.values(inventory).map(obj => ({...obj, id: uniqid()}));
   const [cart, setCart] = useState([]);
-  const [checkoutFlow, setCheckoutFlow] = useState(false);
-  const [items, setItems] = useState(Object.values(inventory).map(obj => ({...obj, id: uniqid()})));
+  const [checkoutFlow, setCheckoutFlow] = useState(false);  
   const [checkoutStep, setCheckoutStep] = useState(1);
   const [checkoutInformation, setCheckoutInformation] = useState({});
   const formatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD'});
@@ -79,12 +79,12 @@ function Store() {
   return (
     <div className="flex flex-1 grow p-2 gap-2 min-h-0">
       <CheckoutContext.Provider value={checkoutFlow}>
-        <CurrencyContext.Provider value={formatter}>
-          <CartContext.Provider value={cartTotal}>
+        <CurrencyFormatContext.Provider value={formatter}>
+          <CartTotalContext.Provider value={cartTotal}>
             <Sidebar checkoutFlow={checkoutFlow} checkoutInformation={checkoutInformation} setCheckoutInformation={setCheckoutInformation} cart={cart} updateItem={updateItem} toggleCheckout={toggleCheckout} checkoutStep={checkoutStep} checkoutNext={checkoutNext} checkoutBack={checkoutBack} />
             <Display items={items} addItem={addItem} />
-          </CartContext.Provider>
-        </CurrencyContext.Provider>
+          </CartTotalContext.Provider>
+        </CurrencyFormatContext.Provider>
       </CheckoutContext.Provider>
     </div>
   );
