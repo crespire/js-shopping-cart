@@ -48,7 +48,7 @@ function StepOne(props) {
         </span>
       </div>
       
-      <div className="flex flex-col grow space-y-2">
+      <form className="flex flex-col grow space-y-2">
 
         { errors.length > 0 &&
           <div className="flex flex-col grow-0 border border-rose-500">
@@ -92,7 +92,7 @@ function StepOne(props) {
           <label htmlFor="addressPost">ZIP/Post Code: </label>
           <input type="text" name="addressPost" placeholder="12345 or A1B2C3" value={checkoutInformation['address']} onChange={handleInput} required />
         </span>
-      </div>
+      </form>
 
       <div className="flex basis-0">
         { renderNext(1) }
@@ -145,7 +145,7 @@ function StepTwo(props) {
         </span>
       </div>
 
-      <div className="flex flex-col grow space-y-2">
+      <form className="flex flex-col grow space-y-2">
 
         { errors.length > 0 &&
           <div className="flex flex-col grow-0 border border-rose-500">
@@ -169,7 +169,7 @@ function StepTwo(props) {
           <label htmlFor="cardSec">Security Code: </label>
           <input name="cardSec" type="text" placeholder="123" pattern="^\d{3}$" value={checkoutInformation['card-sec']} onChange={handleInput} required />
         </span>
-      </div>
+      </form>
 
       <div className="flex basis-0">
         { renderNext(2) }
