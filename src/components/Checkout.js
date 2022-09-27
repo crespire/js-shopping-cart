@@ -28,9 +28,8 @@ function Checkout(props) {
   }
 
   useEffect(() => {
-    console.log(errors);
     setCheckoutInformation(values);
-  }, [values]);
+  }, [setCheckoutInformation, values]);
 
   const renderStep = (checkoutStep) => {
     let result;

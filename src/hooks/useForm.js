@@ -1,4 +1,3 @@
-import { getStaticContextFromError } from '@remix-run/router';
 import { useState } from 'react';
 
 const useForm = (callback) => {
@@ -6,14 +5,10 @@ const useForm = (callback) => {
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    console.log('Hook handleChange:');
     e.preventDefault();
-
     let target = e.target;
     let property = target.name;
     let value = target.value;
-
-    console.log(`Got: [${property}]: ${value}`);
 
     validate(property, value)
 
@@ -23,8 +18,6 @@ const useForm = (callback) => {
   }
 
   const validate = (property, value) => {
-    console.log(`Hook validating ${property} with value: ${value}`);
-
     const errorSetter = (property, message) => {
       setErrors({
         ...errors, [property]: message
@@ -71,7 +64,6 @@ const useForm = (callback) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Handling submit...')
 
     if (Object.keys(errors).length === 0 && Object.keys(values).length > 0) {
       callback();
