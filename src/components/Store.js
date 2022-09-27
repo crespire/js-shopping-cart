@@ -58,7 +58,7 @@ function Store() {
       console.log('Order received! Beep boop.');
       console.error('DISCLAIMER: Your order and information will not be processed. Please visit a real pet store to buy stuff for your fur baby.');
       console.table(checkoutInformation);
-      alert('Your order was submitted! (to the browser console...). Your cart and information have been reset.');
+      alert('Your order was submitted (into the void...)! Your cart and information have been reset.');
       setCart([]);
       setCheckoutInformation({});
       setCheckoutFlow(false);
