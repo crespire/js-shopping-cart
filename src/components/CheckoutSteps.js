@@ -29,7 +29,7 @@ function StepOne(props) {
 
             <span>
               <label htmlFor="email">Email: </label>
-              <input name="email" type="email" placeholder="email@example.com" onChange={hookHandleInput} required />
+              <input name="email" type="email" placeholder="email@example.com" value={values['email'] || ''} onChange={hookHandleInput} required />
               { errors.email && <p className="border border-rose-500 border-solid">{errors.email}</p>}
             </span>
 

@@ -3,8 +3,8 @@ import { StepOne, StepTwo, StepThree } from './CheckoutSteps';
 import useForm from '../hooks/useForm';
 
 function Checkout(props) {
-  const {cart, toggleCheckout, setCheckoutInformation, checkoutStep, checkoutNext, checkoutBack} = props;
-  const { values, errors, handleChange, handleSubmit } = useForm(checkoutNext);
+  const { cart, toggleCheckout, setCheckoutInformation, checkoutInformation, checkoutStep, checkoutNext, checkoutBack } = props;
+  const { values, errors, handleChange, handleSubmit } = useForm(checkoutNext, checkoutInformation);
 
   const renderTopButtons = (checkoutStep) => {
     let result;

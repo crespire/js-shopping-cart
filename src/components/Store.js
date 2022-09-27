@@ -13,18 +13,7 @@ function Store() {
   const [checkoutFlow, setCheckoutFlow] = useState(false);
   const [items, setItems] = useState(Object.values(inventory).map(obj => ({...obj, id: uniqid()})));
   const [checkoutStep, setCheckoutStep] = useState(1);
-  const [checkoutInformation, setCheckoutInformation] = useState({
-    name: '',
-    email: '',
-    addressStreet: '',
-    addressCity: '',
-    addressArea: '',
-    addressCountry: '',
-    addressPost: '',
-    cardNumber: '',
-    cardExp: '',
-    cardSec: '',
-  });
+  const [checkoutInformation, setCheckoutInformation] = useState({});
   const formatter = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD'});
   const cartTotal = cart.reduce((total, entry) => { return total += entry.item.cost * entry.quantity }, 0);
 
@@ -69,7 +58,11 @@ function Store() {
       console.log('Order received! Beep boop.');
       console.error('DISCLAIMER: Your order and information will not be processed. Please visit a real pet store to buy stuff for your fur baby.');
       console.table(checkoutInformation);
-      alert('Your order was submitted! (to the browser console...)');
+      alert('Your order was submitted! (to the browser console...). Your cart and information have been reset.');
+      setCart([]);
+      setCheckoutInformation({});
+      setCheckoutFlow(false);
+      setCheckoutStep(1);
     } else {
       setCheckoutStep(prev => prev + 1);
     }    
