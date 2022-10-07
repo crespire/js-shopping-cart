@@ -8,7 +8,7 @@ function Home() {
         <p className="text-3xl">Welcome!</p>
         <p>You're about to step into the Cozy Creature Canteen!</p>
         <p>You'll find everything you need here to take care of your pet!</p>
-        <span className="p-3 background-slate-300 border-2 border-solid border-black"><Link to="store">Visit the store</Link></span>
+        <Link className="p-3 background-slate-300 border-2 border-solid border-black" to="store">Visit the store</Link>
       </div>
       
     </div>
